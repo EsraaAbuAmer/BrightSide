@@ -1,39 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import React, { useEffect } from 'react';
+import * as Notifications from 'expo-notifications';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { GratitudeProvider } from './context/GratitudeContext';
+import TabsNavigator from '../app/navigation/TabsNavigator';
+import { ThemeProvider } from '../app/context/ThemeContext'; 
+import { NavigationContainer } from '@react-navigation/native';
+// Notification configuration
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+const configureNotifications = async () => {
+  try {
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status !== 'granted') {
+      const { status: newStatus } = await Notifications.requestPermissionsAsync();
+      if (newStatus !== 'granted') {
+        console.warn('Notifications permission not granted!');
+      }
     }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
+  } catch (error) {
+    console.error('Error configuring notifications:', error);
   }
+};
+
+export default function Layout() {
+  useEffect(() => {
+    configureNotifications();
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider>
+    <GratitudeProvider>
+      <NavigationContainer>
+        <TabsNavigator />
+      </NavigationContainer>
+    </GratitudeProvider>
     </ThemeProvider>
   );
 }
