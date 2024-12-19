@@ -35,7 +35,7 @@ const CalendarScreen: React.FC = () => {
   const renderItem = (item: { text: string; id: string }) => (
     <View style={[styles.item, isDarkMode && styles.itemDark]}>
       <Text style={[styles.itemText, isDarkMode && styles.itemTextDark]}>{item.text}</Text>
-      <TouchableOpacity onPress={() => deleteGratitude(item.id)}>
+      <TouchableOpacity onPress={() => deleteGratitude(item.id)}  style={[styles.deleteButton]}>
         <Text style={[styles.deleteText, isDarkMode && styles.deleteTextDark]}>Delete</Text>
       </TouchableOpacity>
     </View>
@@ -43,7 +43,7 @@ const CalendarScreen: React.FC = () => {
 
   const renderEmptyData = () => (
     <View style={[styles.emptyContainer, isDarkMode && styles.emptyContainerDark]}>
-      <Text style={[styles.emptyText, isDarkMode && styles.emptyTextDark]}>No gratitude entries yet!</Text>
+      <Text style={[styles.emptyText, isDarkMode && styles.emptyTextDark]}>No gratitude entries for this day!</Text>
       <Text style={[styles.suggestionText, isDarkMode && styles.suggestionTextDark]}>
         Take a moment to reflect on what you're grateful for and start adding entries.
       </Text>
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
   deleteText: {
     color: '#6BB5C9',
     fontSize: 14,
-    marginTop: 8,
   },
   deleteTextDark: {
     color: '#90CAF9',
@@ -161,6 +160,10 @@ const styles = StyleSheet.create({
   suggestionTextDark: {
     color: '#607D8B',
   },
+  deleteButton:{
+    width:"20%",
+    marginTop:5,
+  }
 });
 
 export default CalendarScreen;

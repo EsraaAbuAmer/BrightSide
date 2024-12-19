@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { useGratitude } from '../context/GratitudeContext';
 import { useTheme } from '../context/ThemeContext';
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 type SettingsScreenProps = {
   navigation: any;
@@ -23,7 +23,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
   const [hasNotificationPermission, setHasNotificationPermission] = useState(false);
   const { isDarkMode, toggleDarkMode } = useTheme();
-  // Initialize Settings
+
   useEffect(() => {
     const initializeSettings = async () => {
       try {
@@ -35,7 +35,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
         setHasNotificationPermission(status === 'granted');
         setIsDailyReminderOn(dailyReminderState === 'true');
         setIsEveningSummaryOn(eveningSummaryState === 'true');
-
       } catch (error) {
         console.error('Failed to initialize settings:', error);
       }
@@ -44,7 +43,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     initializeSettings();
   }, []);
 
-  // Save State in AsyncStorage
   const saveState = async (key: string, value: boolean) => {
     try {
       await AsyncStorage.setItem(key, value.toString());
@@ -53,7 +51,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Request Notification Permission
   const requestNotificationPermission = async () => {
     try {
       const { status } = await Notifications.requestPermissionsAsync();
@@ -69,7 +66,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Toggle Daily Reminders
   const toggleDailyReminders = async () => {
     if (!hasNotificationPermission) {
       await requestNotificationPermission();
@@ -94,7 +90,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Toggle Evening Summary
   const toggleEveningSummary = async () => {
     if (!hasNotificationPermission) {
       await requestNotificationPermission();
@@ -119,83 +114,75 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Dynamic Theme Styles
   const themeStyles = isDarkMode
     ? {
-        container: { backgroundColor: '#37474F' }, // Dark background
-        title: { color: '#FFFFFF' }, // Light text
-        label: { color: '#ECEFF1' }, // Light gray for labels
-        borderColor: '#6BB5C9', // Highlight blue for borders
+        container: { backgroundColor: '#37474F' },
+        title: { color: '#FFFFFF' },
+        label: { color: '#FFFFFF' },
+        divider: { backgroundColor: '#444' },
       }
     : {
-        container: { backgroundColor: '#F8F9FA' }, // Light gray background
-        title: { color: '#37474F' }, // Dark gray text
-        label: { color: '#37474F' }, // Dark gray for labels
-        borderColor: '#90A4AE', // Cool gray for borders
+        container: { backgroundColor: '#FFFFFF' },
+        title: { color: '#000000' },
+        label: { color: '#000000' },
+        divider: { backgroundColor: '#EEE' },
       };
+
+  const renderSwitchRow = (label: string, iconName: string, value: boolean, onValueChange: () => void) => (
+    <View style={styles.row}>
+      <View style={styles.rowContent}>
+        <MaterialIcons name={iconName} size={24} color={themeStyles.label.color} />
+        <Text style={[styles.label, themeStyles.label]}>{label}</Text>
+      </View>
+      <Switch
+        value={value}
+        onValueChange={onValueChange}
+        trackColor={{ false: '#CCC', true: '#6BB5C9' }}
+        thumbColor={value ? '#BBDEFB' : '#ECEFF1'}
+      />
+    </View>
+  );
 
   return (
     <View style={[styles.container, themeStyles.container]}>
       <Text style={[styles.title, themeStyles.title]}>Settings</Text>
-
-      <View style={[styles.switchContainer, { borderColor: themeStyles.borderColor }]}>
-        <Text style={[styles.label, themeStyles.label]}>Daily Reminders</Text>
-        <Switch
-          value={isDailyReminderOn}
-          onValueChange={toggleDailyReminders}
-          trackColor={{ false: '#90A4AE', true: '#6BB5C9' }}
-          thumbColor={isDailyReminderOn ? '#BBDEFB' : '#ECEFF1'}
-        />
-      </View>
-
-      <View style={[styles.switchContainer, { borderColor: themeStyles.borderColor }]}>
-        <Text style={[styles.label, themeStyles.label]}>Evening Summary</Text>
-        <Switch
-          value={isEveningSummaryOn}
-          onValueChange={toggleEveningSummary}
-          trackColor={{ false: '#90A4AE', true: '#6BB5C9' }}
-          thumbColor={isEveningSummaryOn ? '#BBDEFB' : '#ECEFF1'}
-        />
-      </View>
-
-      <View style={[styles.switchContainer, { borderColor: themeStyles.borderColor }]}>
-        <Text style={[styles.label, themeStyles.label]}>Dark Mode</Text>
-        <Switch
-          value={isDarkMode}
-          onValueChange={toggleDarkMode}
-          trackColor={{ false: '#90A4AE', true: '#6BB5C9' }}
-          thumbColor={isDarkMode ? '#BBDEFB' : '#ECEFF1'}
-        />
-      </View>
+      {renderSwitchRow('Daily Reminders', 'notifications', isDailyReminderOn, toggleDailyReminders)}
+      <View style={[styles.divider, themeStyles.divider]} />
+      {renderSwitchRow('Evening Summary', 'event-note', isEveningSummaryOn, toggleEveningSummary)}
+      <View style={[styles.divider, themeStyles.divider]} />
+      {renderSwitchRow('Dark Mode', 'brightness-6', isDarkMode, toggleDarkMode)}
     </View>
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
   },
   title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 24,
-    marginTop: "25%",
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 16,
+    marginTop:"25%",
   },
-  switchContainer: {
+  row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
     paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 8,
+  },
+  rowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    marginLeft: 12,
+  },
+  divider: {
+    height: 1,
+    marginVertical: 8,
   },
 });
 

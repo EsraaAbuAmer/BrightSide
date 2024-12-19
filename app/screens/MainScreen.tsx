@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,44 +6,49 @@ import {
   TouchableOpacity,
   FlatList,
   StatusBar,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
 import { useGratitude } from '../context/GratitudeContext';
 import GraditudeCard from '../components/GraditudeCard';
 import Icon from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../context/ThemeContext';
+
 type MainScreenProps = {
-  navigation: any; // Add specific types if using React Navigation
+  navigation: any;
 };
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const { gratitudes, deleteGratitude } = useGratitude();
-
-  // State for dark mode
   const { isDarkMode } = useTheme();
 
-  // Get today's date as a string (e.g., "2024-11-24")
   const todayDate = new Date().toISOString().split('T')[0];
-
-  // Filter gratitudes for today
   const todaysGratitudes = gratitudes.filter((item) => item.date.startsWith(todayDate));
-
-
 
   const handlePlusClick = () => {
     navigation.navigate('AddGratitude');
   };
 
+  const handleDeleteGratitude = (id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    deleteGratitude(id);
+  };
+
   const themeStyles = isDarkMode
     ? {
-        container: { backgroundColor: '#37474F' }, // Dark background
-        text: { color: '#FFFFFF' }, // White text for dark mode
-        separator: { backgroundColor: '#90A4AE' }, // Cool gray for separator
+        container: { backgroundColor: '#37474F' },
+        text: { color: '#FFFFFF' },
+        separator: { backgroundColor: '#90A4AE' },
       }
     : {
-        container: { backgroundColor: '#F8F9FA' }, // Light gray background
-        text: { color: '#37474F' }, // Dark text for light mode
-        separator: { backgroundColor: '#ECEFF1' }, // Light gray for separator
+        container: { backgroundColor: '#F8F9FA' },
+        text: { color: '#37474F' },
+        separator: { backgroundColor: '#ECEFF1' },
       };
 
   return (
@@ -52,9 +57,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={themeStyles.container.backgroundColor}
       />
-      {/* Header with title and plus icon */}
       <View style={styles.header}>
-        <Text style={[styles.title, themeStyles.text]}>Gratitude Journal</Text>
+        <Text style={[styles.title, themeStyles.text]}>Today's Gratitude Journal</Text>
         <TouchableOpacity onPress={handlePlusClick}>
           <Icon name="add" size={30} color={isDarkMode ? '#FFFFFF' : '#000'} />
         </TouchableOpacity>
@@ -64,13 +68,15 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         Keep track of the things you're grateful for.
       </Text>
 
-      {/* Gratitudes for Today */}
       {todaysGratitudes.length > 0 ? (
         <FlatList
           data={todaysGratitudes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <GraditudeCard item={item} deleteGratitude={deleteGratitude} />
+            <GraditudeCard
+              item={item}
+              deleteGratitude={() => handleDeleteGratitude(item.id)}
+            />
           )}
           ItemSeparatorComponent={() => (
             <View style={[styles.separator, themeStyles.separator]} />
@@ -85,7 +91,6 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   );
 };
 
-// Base styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useColorScheme } from 'react-native'; // Detects system theme
 import { useTheme } from '../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -18,7 +17,7 @@ const GratitudeCard: React.FC<GratitudeCardProps> = ({ item, deleteGratitude }) 
       <View style={{ flex: 1 }}>
         <Text style={[styles.text, isDarkMode && styles.textDark]}>{item?.text}</Text>
         <Text style={[styles.date, isDarkMode && styles.dateDark]}>
-          {new Date(item?.date).toLocaleTimeString()}
+         {new Date(item?.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </Text>
       </View>
 

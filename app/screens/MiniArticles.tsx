@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,7 +16,7 @@ interface Article {
   content: string;
 }
 
-const articles: Article[] = [
+const allArticles: Article[] = [
   {
     id: '1',
     title: 'The Power of Gratitude',
@@ -38,13 +38,72 @@ const articles: Article[] = [
     content:
       'Mindfulness involves being present in the moment. Try a 5-minute breathing exercise or focus on the sensations around you. Over time, mindfulness helps reduce stress and increases feelings of contentment.',
   },
+  {
+    id: '4',
+    title: 'The Benefits of Journaling',
+    summary: 'Why keeping a journal can improve your mental health.',
+    content:
+      'Journaling helps you process emotions and reflect on your thoughts. Spend 10 minutes daily writing about your experiences to gain clarity and find solutions to challenges.',
+  },
+  {
+    id: '5',
+    title: 'Daily Affirmations',
+    summary: 'How positive affirmations can boost your confidence.',
+    content:
+      'Daily affirmations are positive statements that challenge negative thoughts. Start your day by repeating affirmations like “I am capable” or “I am enough.”',
+  },
+  {
+    id: '6',
+    title: 'The Science of Happiness',
+    summary: 'What research says about achieving lasting happiness.',
+    content:
+      'Studies show that fostering social connections, practicing gratitude, and engaging in hobbies are key contributors to happiness. Small consistent efforts can lead to lasting joy.',
+  },
+  {
+    id: '7',
+    title: 'Healthy Habits for Mental Well-being',
+    summary: 'Develop habits that promote mental health and resilience.',
+    content:
+      'Healthy habits like exercising, meditating, and maintaining a balanced diet can improve mental well-being. Start with small, achievable goals to build momentum.',
+  },
+  {
+    id: '8',
+    title: 'Overcoming Self-Doubt',
+    summary: 'Strategies to silence your inner critic.',
+    content:
+      'Overcoming self-doubt begins with self-awareness. Challenge negative thoughts by questioning their validity and replacing them with positive affirmations.',
+  },
+  {
+    id: '9',
+    title: 'The Role of Kindness in Happiness',
+    summary: 'Acts of kindness can significantly enhance your happiness.',
+    content:
+      'Performing acts of kindness not only helps others but also boosts your own happiness. Start by doing one kind thing for someone each day.',
+  },
+  {
+    id: '10',
+    title: 'Building Resilience',
+    summary: 'How to bounce back from life’s setbacks.',
+    content:
+      'Resilience is about adapting and growing stronger from challenges. Focus on your strengths, maintain a positive outlook, and seek support when needed.',
+  },
 ];
 
 const MiniArticles = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [dailyArticles, setDailyArticles] = useState<Article[]>([]);
   const { isDarkMode } = useTheme();
 
-  // Dynamic styles based on theme
+  // Randomly select 3 articles every day
+  useEffect(() => {
+    const selectRandomArticles = () => {
+      const shuffled = [...allArticles].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 3);
+    };
+
+    setDailyArticles(selectRandomArticles());
+  }, []); // Empty dependency array ensures this runs once per mount
+
   const themeStyles = isDarkMode
     ? {
         container: { backgroundColor: '#37474F' },
@@ -94,7 +153,7 @@ const MiniArticles = () => {
         <>
           <Text style={[styles.header, themeStyles.text]}>Articles</Text>
           <FlatList
-            data={articles}
+            data={dailyArticles}
             keyExtractor={(item) => item.id}
             renderItem={renderArticle}
             contentContainerStyle={styles.articleList}

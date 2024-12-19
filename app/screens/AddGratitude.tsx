@@ -60,8 +60,7 @@ const AddGratitude: React.FC<AddGratitudeProps> = ({ navigation }) => {
       return;
     }
     addGratitude(gratitudeText);
-    Alert.alert('Success', 'Gratitude added successfully!');
-    setGratitudeText(''); // Clear the text box
+    setGratitudeText('');
     navigation.goBack();
   };
 

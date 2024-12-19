@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "BrightSide",
+    "name": "Bright Side",
     "slug": "BrightSide",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/BrightSideIcon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "permissions": ["NOTIFICATIONS"],
@@ -18,7 +18,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#99a9b4"
       }
     },
     "web": {
@@ -31,18 +31,18 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/BrightSideIcon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#99a9b4"
         }
       
       ],
       [
         "expo-notifications",
         {
-          "icon": "./assets/notification-icon.png",
-          "color": "#ffffff"
+          "icon": "./assets/images/splash.png",
+          "color": "#99a9b4"
         }
       ]
     ],
