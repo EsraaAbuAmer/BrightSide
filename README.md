@@ -18,15 +18,13 @@ Follow these steps to set up the project locally:
 	
  2.	Navigate to the project directory:
 
-cd bright-side
+	cd bright-side
 
+3.	Install the dependencies:
 
-	3.	Install the dependencies:
-
-npm install
-
-
-	4.	Start the app using Expo:
+	npm install
+	
+ 4.	Start the app using Expo:
 
 expo start
 
