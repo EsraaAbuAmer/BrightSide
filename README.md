@@ -42,4 +42,4 @@ Feedback
 
 I’d love to hear your thoughts, suggestions, or feedback! Feel free to open an issue or reach out directly. Contributions are welcome!
 
-You can customize the placeholders like `[Video Link]` or `[repository link]` with the actual links before uploading it. Let me know if you need help with any changes!
+
