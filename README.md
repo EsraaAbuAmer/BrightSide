@@ -15,7 +15,8 @@ Follow these steps to set up the project locally:
 1. Clone the repository:  
    ```bash
    git clone https://github.com/EsraaAbuAmer/BrightSide
-	2.	Navigate to the project directory:
+	
+ 2.	Navigate to the project directory:
 
 cd bright-side
 
