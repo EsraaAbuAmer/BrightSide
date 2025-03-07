@@ -1,44 +1,42 @@
 # Bright Side  
 
-**Bright Side** is a journaling app designed to help you focus on positivity by recording your daily gratitudes. 🌟  
+**Bright Side** is a journaling app designed to promote positivity by encouraging users to record their daily gratitudes.  
 
 ## Features  
-- 🗓️ **Calendar** to view and track your gratitude history  
-- ⏰ **Daily reminders** to keep you consistent  
-- 🌗 **Dark and light modes** for a personalized experience  
+- 📅 **Calendar View** – Track and review your gratitude history effortlessly.  
+- ⏰ **Daily Reminders** – Stay consistent with gentle prompts.  
+- 🌗 **Dark & Light Modes** – Customize your experience to suit your preference.  
 
 ## Demo  
-Check out a quick demo of the app: https://drive.google.com/file/d/1J_6qUTZvBNDZAATZfNCvOKnc37dPPdJZ/view?usp=sharing
+Explore a quick demo of Bright Side: [Watch Here](https://drive.google.com/file/d/1J_6qUTZvBNDZAATZfNCvOKnc37dPPdJZ/view?usp=sharing)  
 
 ## Installation  
-Follow these steps to set up the project locally:  
+To set up the project locally, follow these steps:  
+
 1. Clone the repository:  
    ```bash
    git clone https://github.com/EsraaAbuAmer/BrightSide
-	
- 2.	Navigate to the project directory:
+   ```
+2. Navigate to the project directory:  
+   ```bash
+   cd bright-side
+   ```
+3. Install dependencies:  
+   ```bash
+   npm install
+   ```
+4. Start the app using Expo:  
+   ```bash
+   expo start
+   ```
 
-	cd bright-side
+## Tech Stack  
+Bright Side is built using:  
+- **React Native**  
+- **Expo**  
 
-3.	Install the dependencies:
+## Upcoming Updates  
+- 📲 **App Store Release** – Bright Side will soon be available for download on major app stores!  
 
-	npm install
-	
- 4.	Start the app using Expo:
-
-expo start
-
-
-
-Tech Stack
-	•	React Native
-	•	Expo
-
-Upcoming Updates
-	•	The app will soon be available on app stores!
-
-Feedback
-
-I’d love to hear your thoughts, suggestions, or feedback! Feel free to open an issue or reach out directly. Contributions are welcome!
-
-
+## Feedback & Contributions  
+Your feedback is valuable! If you have suggestions or encounter issues, feel free to [open an issue](https://github.com/EsraaAbuAmer/BrightSide/issues) or reach out directly. Contributions are welcome!  
